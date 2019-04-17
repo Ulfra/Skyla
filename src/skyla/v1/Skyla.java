@@ -23,7 +23,7 @@ public class Skyla {
         boolean ok;      // Indicateur pour continuer la conversation
 
         /* Connection a la BD */
-        dire = DataBase.connection("Select * FROM t_reponses");
+        dire = DataBase.connection("Select reponse FROM t_reponses WHERE id_question=2");
         // TODO recuperer seulement le bon chemps
 
         System.out.println(dire +" je suis Skyla, voulez-vous entamer la conversation ?");

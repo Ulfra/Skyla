@@ -28,7 +28,8 @@ public class DataBase {
             //On récupère les MetaData
             ResultSetMetaData resultMeta = result.getMetaData();
 
-            return resultMeta.toString();
+            result.next();
+            return result.getString("reponse");
             //TODO renvoyer le resultat de la requete
 
         } catch (Exception e) {
