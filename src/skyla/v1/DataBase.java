@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DataBase {
-    public static void connection () {
+    public static void connection() {
         try {
             Class.forName("org.postgresql.Driver");
             System.out.println("Driver O.K.");

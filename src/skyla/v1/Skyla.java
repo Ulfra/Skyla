@@ -21,6 +21,9 @@ public class Skyla {
         String aTraiter; // Réponce que va traiter la machine
         boolean ok;      // Indicateur pour continuer la conversation
 
+        /* Connection a la BD */
+        DataBase.connection();
+
         System.out.println("Bonjour, je suis Skyla, voulez-vous entamer la conversation ?");
         reponce = saisieUser();
         ok = reponce.equals("oui");
