@@ -18,13 +18,15 @@ public class Skyla {
     public static void main(String[] args) {
 
         String reponce;  // Réponce de l'utilisateur
+        String dire;     // Ce que dit la machine
         String aTraiter; // Réponce que va traiter la machine
         boolean ok;      // Indicateur pour continuer la conversation
 
         /* Connection a la BD */
-        DataBase.connection();
+        dire = DataBase.connection("Select * FROM t_reponses");
+        // TODO recuperer seulement le bon chemps
 
-        System.out.println("Bonjour, je suis Skyla, voulez-vous entamer la conversation ?");
+        System.out.println(dire +" je suis Skyla, voulez-vous entamer la conversation ?");
         reponce = saisieUser();
         ok = reponce.equals("oui");
         while (ok) {
