@@ -12,51 +12,8 @@ import java.util.Scanner;
 public class Skyla {
 
     /**
-     * Doit converser avec l'utilisateur
-     * Gestion des erreurs de saisie, si l'IA ne comprend pas
-     * @param args non utilis?
-     */
-    public static void main(String[] args) {
-
-        String reponce,         // Réponce de l'utilisateur
-               resultatRequete, // Ce que dit la machine
-               aTraiter;        // Réponce que va traiter la machine
-
-<<<<<<< HEAD
-        int id,                 // Id de la requete
-            nombreAleatoire;
-=======
-        /* Connection a la BD */
-        dire = DataBase.connection("SELECT reponse FROM t_reponses WHERE id_question=1");
-        // TODO recuperer seulement le bon chemps
->>>>>>> 5df8c22119831ba629fb62d04789208ac9b08786
-
-        boolean ok;             // Indicateur pour continuer la conversation
-
-        /* Compte le nombre de reponce possible */
-        resultatRequete = DataBase.connection(
-                "Select COUNT(reponse) FROM t_reponses WHERE id_question=1");
-
-        id = Integer.parseInt(resultatRequete);
-
-        nombreAleatoire = aleatoire(1, id);
-
-        resultatRequete = DataBase.connection(
-                "Select reponse FROM t_reponses WHERE id_reponse="+nombreAleatoire);
-
-        System.out.println(resultatRequete +" Je suis Skyla, voulez-vous entamer la conversation ?");
-        reponce = saisieUser();
-        ok = reponce.equals("oui");
-        while (ok) {
-            System.out.println("Avons-nous finis de discuter ?");
-            ok = !saisieUser().equals("oui");
-        }
-
-
-    }
-
-    /**
-     * Convertie une réponce de l'utilisateur entierement en minuscule
+     * Recupereune réponce de l'utilisateur et la
+     * convertie entierement en minuscule
      * @return la string entrée entierement en minuscule
      */
     public static String saisieUser() {
@@ -67,6 +24,7 @@ public class Skyla {
         return aConvertir.toLowerCase();
     }
 
+
     /**
      * Genere un nombre aléatoire dans un intervalle
      * @param min : minimum de l'intervale
@@ -76,4 +34,104 @@ public class Skyla {
     public static int aleatoire(int min, int max) {
         return min + (int)(Math.random() * ((max - min) + 1));
     }
+
+
+    /**
+     * Verifie si la chaine de chararctere est connu dans la base
+     * de données
+     * @param aVerifier : resultat a vérifier
+     * @return true si le resultat est connue
+     */
+    public static boolean estConnue(String aVerifier) {
+
+        String resultat;
+
+        resultat = DataBase.envoiSelect(
+                "Select COUNT(question) FROM t_question WHERE question='"+aVerifier+'\'');
+
+        return !(Integer.parseInt(resultat) == 0);
+    }
+
+    /**
+     * Determine la catégorie de la question
+     * @param aChercher question dont on cherche la catégorie
+     * @return le numero de la catégorie de la question
+     */
+    public static int getID(String aChercher) {
+
+        String resultat;
+
+        resultat = DataBase.envoiSelect(
+                "Select categorie FROM t_question WHERE question='"+aChercher+'\'');
+        return Integer.parseInt(resultat);
+
+    }
+
+
+    /**
+     * Systeme de reponces de l'IA
+     * @param categorie : id de la catégorie de la question de l'user
+     * @return la reponce de l'IA
+     */
+    public static String repondre(int categorie) {
+
+        String resultatRequete; // Resultat des requetes a traiter
+        int nbReponce,          // Nombre de reponses possible en fonction de la catégorie
+            nbAlea;             // ID generer aléatoirement de la réponse
+
+        /* Compte le nombre de reponses possible dans cette catégorie */
+        resultatRequete = DataBase.envoiSelect(
+                "Select COUNT(reponse) FROM t_reponses WHERE categorie="+categorie);
+
+        /* Conversion de l'ID en int */
+        nbReponce = Integer.parseInt(resultatRequete);
+
+        nbAlea = aleatoire(1, nbReponce);
+
+        resultatRequete = DataBase.envoiSelect(
+                "Select reponse FROM t_reponses WHERE id_reponse="+nbAlea +" AND categorie="+categorie);
+
+        return  resultatRequete;
+    }
+
+    /**
+     * Doit converser avec l'utilisateur
+     * Gestion des erreurs de saisie, si l'IA ne comprend pas
+     * @param args non utilis?
+     */
+    public static void main(String[] args) {
+
+        String reponseUser,  // Réponce de l'utilisateur
+               reponseIa;   // Réponses de l'IA
+
+        Boolean ok;         // Indicateur de discution
+
+        int categorieQuestion;
+
+        reponseIa = repondre(1);
+
+        System.out.println(reponseIa +" Je suis Skyla, voulez-vous entamer la conversation ?");
+        reponseUser = saisieUser();
+        ok = reponseUser.equals("oui");
+        System.out.println("Je suis heureuse de discuter avec vous !");
+        while (ok) {
+            reponseUser = saisieUser();
+            if (estConnue(reponseUser)) {
+                categorieQuestion = getID(reponseUser);
+            } else {
+                categorieQuestion = 0;
+            }
+            reponseIa = repondre(categorieQuestion);
+            System.out.println(reponseIa);
+
+
+            System.out.println("Avons-nous finis de discuter ?");
+            ok = !saisieUser().equals("oui");
+        }
+
+
+    }
+
+
 }
+

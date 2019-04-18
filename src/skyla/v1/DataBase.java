@@ -6,7 +6,7 @@ public class DataBase {
 
 
 
-    public static String connection(String requete) {
+    public static String envoiSelect(String requete) {
 
         String aRetourner;
         try {
@@ -33,15 +33,13 @@ public class DataBase {
             ResultSetMetaData resultMeta = result.getMetaData();
 
             result.next();
-<<<<<<< HEAD
-            return result.getString(1);
-=======
-            aRetourner = result.getString("reponse");
+            aRetourner = result.getString(1);
+
+
             result.close();
             state.close();
+
             return aRetourner;
->>>>>>> 5df8c22119831ba629fb62d04789208ac9b08786
-            //TODO renvoyer le resultat de la requete
 
         } catch (Exception e) {
             e.printStackTrace();
