@@ -22,8 +22,14 @@ public class Skyla {
                resultatRequete, // Ce que dit la machine
                aTraiter;        // Réponce que va traiter la machine
 
+<<<<<<< HEAD
         int id,                 // Id de la requete
             nombreAleatoire;
+=======
+        /* Connection a la BD */
+        dire = DataBase.connection("SELECT reponse FROM t_reponses WHERE id_question=1");
+        // TODO recuperer seulement le bon chemps
+>>>>>>> 5df8c22119831ba629fb62d04789208ac9b08786
 
         boolean ok;             // Indicateur pour continuer la conversation
 

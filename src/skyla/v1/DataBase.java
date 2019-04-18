@@ -7,6 +7,8 @@ public class DataBase {
 
 
     public static String connection(String requete) {
+
+        String aRetourner;
         try {
             Class.forName("org.postgresql.Driver");
             // System.out.println("Driver O.K."); //Indicateur du driver
@@ -31,7 +33,14 @@ public class DataBase {
             ResultSetMetaData resultMeta = result.getMetaData();
 
             result.next();
+<<<<<<< HEAD
             return result.getString(1);
+=======
+            aRetourner = result.getString("reponse");
+            result.close();
+            state.close();
+            return aRetourner;
+>>>>>>> 5df8c22119831ba629fb62d04789208ac9b08786
             //TODO renvoyer le resultat de la requete
 
         } catch (Exception e) {
