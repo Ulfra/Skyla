@@ -1,5 +1,6 @@
 package skyla.v1;
 
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -17,16 +18,27 @@ public class Skyla {
      */
     public static void main(String[] args) {
 
-        String reponce;  // Réponce de l'utilisateur
-        String dire;     // Ce que dit la machine
-        String aTraiter; // Réponce que va traiter la machine
-        boolean ok;      // Indicateur pour continuer la conversation
+        String reponce,         // Réponce de l'utilisateur
+               resultatRequete, // Ce que dit la machine
+               aTraiter;        // Réponce que va traiter la machine
 
-        /* Connection a la BD */
-        dire = DataBase.connection("Select reponse FROM t_reponses WHERE id_question=2");
-        // TODO recuperer seulement le bon chemps
+        int id,                 // Id de la requete
+            nombreAleatoire;
 
-        System.out.println(dire +" je suis Skyla, voulez-vous entamer la conversation ?");
+        boolean ok;             // Indicateur pour continuer la conversation
+
+        /* Compte le nombre de reponce possible */
+        resultatRequete = DataBase.connection(
+                "Select COUNT(reponse) FROM t_reponses WHERE id_question=1");
+
+        id = Integer.parseInt(resultatRequete);
+
+        nombreAleatoire = aleatoire(1, id);
+
+        resultatRequete = DataBase.connection(
+                "Select reponse FROM t_reponses WHERE id_reponse="+nombreAleatoire);
+
+        System.out.println(resultatRequete +" Je suis Skyla, voulez-vous entamer la conversation ?");
         reponce = saisieUser();
         ok = reponce.equals("oui");
         while (ok) {
@@ -47,5 +59,15 @@ public class Skyla {
         String aConvertir;
         aConvertir = entree.nextLine();
         return aConvertir.toLowerCase();
+    }
+
+    /**
+     * Genere un nombre aléatoire dans un intervalle
+     * @param min : minimum de l'intervale
+     * @param max : maximum de l'intervale
+     * @return un nombre aléatoire
+     */
+    public static int aleatoire(int min, int max) {
+        return min + (int)(Math.random() * ((max - min) + 1));
     }
 }
