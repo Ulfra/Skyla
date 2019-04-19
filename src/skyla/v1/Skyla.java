@@ -94,6 +94,38 @@ public class Skyla {
         return  resultatRequete;
     }
 
+
+    /**
+     * Demmande a l'utilisateur si elle doit apprendre la phrase qu'il viens de dire.
+     * => Si oui l'utilisateur doit présiser une catégorie de question
+     *      => Si la categorie n'existe pas l'utilisater peu la créer
+     * => Si non, elle ignore
+     * @param aApprendre phrase de l'user a apprendre
+     */
+    public static void apprendre(String aApprendre) {
+
+        String reponse; //Réponse de l'user
+        int id_categorie;  // Categorie de la reponse de l'user
+
+        System.out.println("Dois-je apprendre cette phrase ?");
+        reponse = saisieUser();
+        if (reponse.equals("oui")) {
+            DataBase.affichageCategorie();
+            System.out.println("L'ID de la catégorie de la phrase existe t'il ?");
+            if (saisieUser().equals("oui")){
+                System.out.println("Quel est l'ID de la catégorie de votre phrase?");
+                id_categorie = Integer.parseInt(saisieUser());
+            } else {
+                System.out.println("Voulez vous créer une nouvelle catégorie ?");
+                if (sasieUser().equals("oui")) {
+                    //TODO Ajouter une nouvelle categoorie
+                }
+            }
+
+
+        }
+    }
+
     /**
      * Doit converser avec l'utilisateur
      * Gestion des erreurs de saisie, si l'IA ne comprend pas
@@ -114,15 +146,17 @@ public class Skyla {
         reponseUser = saisieUser();
         ok = reponseUser.equals("oui");
         System.out.println("Je suis heureuse de discuter avec vous !");
+
         while (ok) {
             reponseUser = saisieUser();
             if (estConnue(reponseUser)) {
                 categorieQuestion = getID(reponseUser);
+                reponseIa = repondre(categorieQuestion);
+                System.out.println(reponseIa);
             } else {
-                categorieQuestion = 0;
+                apprendre(reponseUser);
             }
-            reponseIa = repondre(categorieQuestion);
-            System.out.println(reponseIa);
+
 
 
             System.out.println("Avons-nous finis de discuter ?");
