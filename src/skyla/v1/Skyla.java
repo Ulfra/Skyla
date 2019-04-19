@@ -94,6 +94,37 @@ public class Skyla {
         return  resultatRequete;
     }
 
+    /**
+     * Compte le nombre de catégorie disponible
+     * @return le nobre de catégorie
+     */
+    public static int nbCategorie() {
+
+        String resultatRequete; // Resultat des requetes a traiter
+
+        /* Compte le nombre de reponses possible dans cette catégorie */
+        resultatRequete = DataBase.envoiSelect(
+                "Select COUNT(id_categorie) FROM t_categorie");
+
+        /* COnvertie le nombre de catégorie en int */
+        return Integer.parseInt(resultatRequete);
+
+    }
+
+    public static  int nbReponse(int categorie) {
+
+        String resultatRequete; // Resultat des requetes a traiter
+
+        /* Compte le nombre de reponses possible dans cette catégorie */
+        resultatRequete = DataBase.envoiSelect(
+                "Select COUNT(id_reponse) FROM t_reponses WHERE categorie="+categorie);
+
+        /* COnvertie le nombre de catégorie en int */
+        return Integer.parseInt(resultatRequete);
+
+    }
+
+
 
     /**
      * Demmande a l'utilisateur si elle doit apprendre la phrase qu'il viens de dire.
@@ -104,25 +135,56 @@ public class Skyla {
      */
     public static void apprendre(String aApprendre) {
 
-        String reponse; //Réponse de l'user
-        int id_categorie;  // Categorie de la reponse de l'user
+        String reponse,        //Réponse de l'user
+               nom_catégorie;  // Nom de la catégorie
+        int id_categorie = 0,      // Categorie de la reponse de l'user
+            id_reponse = 0;
 
+
+        /* Apprendre phrase */
         System.out.println("Dois-je apprendre cette phrase ?");
         reponse = saisieUser();
+
+        /* Choix de l'user */
         if (reponse.equals("oui")) {
+
             DataBase.affichageCategorie();
             System.out.println("L'ID de la catégorie de la phrase existe t'il ?");
+
             if (saisieUser().equals("oui")){
+
                 System.out.println("Quel est l'ID de la catégorie de votre phrase?");
                 id_categorie = Integer.parseInt(saisieUser());
+
             } else {
                 System.out.println("Voulez vous créer une nouvelle catégorie ?");
-                if (sasieUser().equals("oui")) {
-                    //TODO Ajouter une nouvelle categoorie
+                if (saisieUser().equals("oui")) {
+                    id_categorie = nbCategorie()+1;
+                    System.out.println("Quelle est le nom de la catégorie ?");
+                    nom_catégorie = saisieUser();
+                    DataBase.ajoutCategorie(id_categorie, nom_catégorie);
                 }
             }
 
+            /* Ajout de la question dans la BD */
+            DataBase.ajoutQuestion(id_categorie, aApprendre);
+            System.out.println("Que doit-je répondre a cette phrases ?");
+            reponse = saisieUser();
+            id_reponse = nbReponse(id_categorie) +1;
+            DataBase.ajoutReponse(id_reponse,id_categorie,reponse);
 
+
+        }
+    }
+
+
+    public static void commande(int id_categorie) {
+
+        switch (id_categorie) {
+            case -1:
+                apprendre();
+            case -2
+                quitter();
         }
     }
 
@@ -151,6 +213,9 @@ public class Skyla {
             reponseUser = saisieUser();
             if (estConnue(reponseUser)) {
                 categorieQuestion = getID(reponseUser);
+                if (categorieQuestion < 0) {
+
+                }
                 reponseIa = repondre(categorieQuestion);
                 System.out.println(reponseIa);
             } else {

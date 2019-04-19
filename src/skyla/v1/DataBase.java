@@ -98,5 +98,109 @@ public class DataBase {
         }
     }
 
+    public static void ajoutCategorie(int id_categorie, String nom_categorie) {
 
+        try {
+            Class.forName("org.postgresql.Driver");
+            // System.out.println("Driver O.K."); //Indicateur du driver
+
+            /* URL de la base de donnée */
+            String url = "jdbc:postgresql://postgresql-insertthenamehere.alwaysdata.net/insertthenamehere_skyla";
+
+            /* Utilisateur de la base de donnée */
+            String user = "insertthenamehere_skyjc";
+
+            /* Mot de passe pour se connecter a la BD */
+            String passwd = "QjP8fCp";
+
+            /* Se connecte */
+            Connection co = DriverManager.getConnection(url, user, passwd);
+            //System.out.println("Connexion effective !");
+
+            // create a Statement from the connection
+            Statement statement = co.createStatement();
+
+            // insert the data
+            statement.executeUpdate("INSERT INTO t_categorie " +
+                                         "VALUES ("+id_categorie+",'"+nom_categorie+"')");
+
+            System.out.println("Je suis heureuse d'avoir put apprendre");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Je n'ai pas réussi a apprendre");
+        }
+    }
+
+
+    public static void ajoutQuestion(int id_categorie, String question) {
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            // System.out.println("Driver O.K."); //Indicateur du driver
+
+            /* URL de la base de donnée */
+            String url = "jdbc:postgresql://postgresql-insertthenamehere.alwaysdata.net/insertthenamehere_skyla";
+
+            /* Utilisateur de la base de donnée */
+            String user = "insertthenamehere_skyjc";
+
+            /* Mot de passe pour se connecter a la BD */
+            String passwd = "QjP8fCp";
+
+            /* Se connecte */
+            Connection co = DriverManager.getConnection(url, user, passwd);
+            //System.out.println("Connexion effective !");
+
+            // create a Statement from the connection
+            Statement statement = co.createStatement();
+
+            // insert the data
+            statement.executeUpdate("INSERT INTO t_question " +
+                    "VALUES ("+id_categorie+",'"+question+"')");
+
+            System.out.println("Je viens d'apprendre " + question);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Je n'ai pas réussi a apprendre");
+        }
+
+
+
+    }
+
+    public static void ajoutReponse(int id_reponse, int id_categorie, String reponse) {
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            // System.out.println("Driver O.K."); //Indicateur du driver
+
+            /* URL de la base de donnée */
+            String url = "jdbc:postgresql://postgresql-insertthenamehere.alwaysdata.net/insertthenamehere_skyla";
+
+            /* Utilisateur de la base de donnée */
+            String user = "insertthenamehere_skyjc";
+
+            /* Mot de passe pour se connecter a la BD */
+            String passwd = "QjP8fCp";
+
+            /* Se connecte */
+            Connection co = DriverManager.getConnection(url, user, passwd);
+            //System.out.println("Connexion effective !");
+
+            // create a Statement from the connection
+            Statement statement = co.createStatement();
+
+            // insert the data
+            statement.executeUpdate("INSERT INTO t_reponses " +
+                    "VALUES (" + id_reponse + ',' + id_categorie + ",'" + reponse + "')");
+
+            System.out.println("Je viens d'apprendre " + reponse);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Je n'ai pas réussi a apprendre");
+        }
+    }
 }
